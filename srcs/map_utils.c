@@ -37,7 +37,7 @@ void	map_height(t_root *root, char *map_data)
 		{
 			destroy_root(root);
 			free(map_data);
-			error("Error: Invalid map dimension!\n");			
+			error("Error: Invalid map dimension!\n");
 		}
 		i += root->game->width + 1;
 		root->game->height++;
@@ -70,13 +70,13 @@ static void	is_ent(t_root *root, char c, char *map_data)
 		root->game->count_exit++;
 	else if (c == 'C')
 		root->game->count_coll++;
-	else if (c == '1' || c == '0')
+	else if (c == '1' || c == '0' || c == 'S')
 		return ;
 	else
 	{
 		destroy_root(root);
 		free(map_data);
-		error("Error: Invalid map entity!\n");			
+		error("Error: Invalid map entity!\n");
 	}
 }
 
@@ -106,13 +106,12 @@ int	map_valid(t_root *root, char *map_data)
 			continue ;
 		if (is_border(root, i))
 		{
-			if (map_data[i]!= '1')
+			if (map_data[i] != '1')
 			{
 				destroy_root(root);
 				free(map_data);
 				error("Error: map is not covered by borders\n");
 			}
-			
 		}
 		is_ent(root, map_data[i], map_data);
 	}

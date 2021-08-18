@@ -31,6 +31,8 @@ typedef struct s_game
 	int				player_coll;
 	t_coord			exit;
 	t_coord			*coll;
+	t_coord			*enemies;
+	int				count_enemies;
 	int				count_coll;
 	int				count_exit;
 	int				count_player;
@@ -53,23 +55,37 @@ typedef struct s_root
 	void			*black;
 }				t_root;
 
+//error handling 
 void	error(char *message);
 int		valid_ber(char *path);
 
+//root functions
 t_root	*init_root(char *map_path);
 void	destroy_root(t_root	*root);
 void	init_map(t_root *root, char *map_path);
 int		draw(t_root *root);
 void	draw_info(t_root *root);
 
+//map validation
 int		map_valid(t_root *root, char *map_data);
 void	map_height(t_root *root, char *map_data);
 void	map_width(t_root *root, char *map_data);
 
+//player functions
 int		key_handler(int keycode, t_root *root);
 int		check_move(t_root *root, int direction, int og_x, int og_y);
 int		check_exit(t_root *root, int direction, int og_x, int og_y);
 void	check_coll(t_root *root, int direction, int og_x, int og_y);
+void	check_p2e(t_root *root, int direction, int og_x, int og_y);
 
+//enemy funcs
+void	spawn_enemy(t_root *root);
+void	move_enemy(t_root *root);
+int		check_coll_enemy(t_root *root, int direction, int og_x, int og_y);
+void	check_e2p(t_root *root, int direction, int og_x, int og_y);
+void	game_over(void);
+
+//utils
 char	*get_next_line(int fd);
+
 #endif

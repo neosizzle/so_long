@@ -32,7 +32,9 @@ static void	init_game(t_root *root, char *map_path)
 	root->game->player_move = 0;
 	root->game->player_coll = 0;
 	root->game->coll = 0;
+	root->game->enemies = 0;
 	root->game->count_coll = 0;
+	root->game->count_enemies = 0;
 	root->game->count_exit = 0;
 	root->game->count_player = 0;
 	init_map(root, map_path);
@@ -61,13 +63,15 @@ static void	init_renderer(t_root *root)
 	root->mlx = mlx_init();
 	if (!root->mlx)
 		error("Error : mlx_init() failure\n");
-	root->mlx_win = mlx_new_window(root->mlx, root->game->width * 50, 30 + (root->game->height * 50), "so_long");
+	root->mlx_win
+		= mlx_new_window(root->mlx, root->game->width * 50,
+			30 + (root->game->height * 50), "so_long");
 	if (!root->mlx_win)
 		error("Error : mlx_new_window() failure\n");
 }
 
 /*
-	1. tries to malloc memory for root struct (throes err if fails)
+	1. tries to malloc memory for root struct (throws err if fails)
 	2. set all values to 0
 	3. call helpers to init textures, game and renderer
 */
@@ -83,6 +87,9 @@ t_root	*init_root(char *map_path)
 	res->mlx_img = 0;
 	res->game = 0;
 	res->player = 0;
+	res->player_mir = 0;
+	res->enemy = 0;
+	res->black = 0;
 	res->exit = 0;
 	res->coll = 0;
 	res->wall = 0;

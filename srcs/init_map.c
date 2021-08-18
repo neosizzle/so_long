@@ -3,9 +3,11 @@
 /*
 ** Sets the coords of entities in the root struct
 */
-static void set_coords(t_root *root, char *map_data, int k)
+static void	set_coords(t_root *root, char *map_data, int k)
 {
-	static int count;
+	static int	count;
+
+	count = 0;
 	if (map_data[k] == 'P')
 	{
 		root->game->player.x = k % (root->game->width + 1);
@@ -45,7 +47,8 @@ static void	map_parse(t_root *root, char *map_data)
 	while (++i < root->game->height)
 	{
 		j = -1;
-		(root->game->map)[i] = (char *)malloc(sizeof (char) * (root->game->width + 1));
+		(root->game->map)[i]
+			= (char *)malloc(sizeof (char) * (root->game->width + 1));
 		while (++j < root->game->width)
 		{
 			root->game->map[i][j] = map_data[++k];
@@ -82,7 +85,8 @@ static void	map_read(t_root *root, char *map_data)
 		destroy_root(root);
 		error("Error: malloc() failed\n");
 	}
-	root->game->map = (char **)malloc(sizeof(char *) * (root->game->height + 1));
+	root->game->map
+		= (char **)malloc(sizeof(char *) * (root->game->height + 1));
 	if (!root->game->map)
 	{
 		free(map_data);
@@ -92,6 +96,9 @@ static void	map_read(t_root *root, char *map_data)
 	map_parse(root, map_data);
 }
 
+/*
+	Helper to join the resutls of data and buffer into data
+*/
 static void	read_to_buf(int fd, char **temp, char **data, char **buff)
 {
 	*temp = ft_strjoin(*data, *buff);

@@ -12,7 +12,7 @@ void	error(char *message)
 /*
 **Checks if the path given ends with a .ber extension
 */
-int		valid_ber(char *path)
+int	valid_ber(char *path)
 {
 	int	len;
 
@@ -30,7 +30,7 @@ int		valid_ber(char *path)
 Destroys game in root struct and frees memory
 */
 
-static void destroy_game(t_game *game)
+static void	destroy_game(t_game *game)
 {
 	int	i;
 
@@ -38,6 +38,8 @@ static void destroy_game(t_game *game)
 	{
 		if (game->coll != 0)
 			free(game->coll);
+		if (game->enemies != 0)
+			free(game->enemies);
 		if (game->map != 0)
 		{
 			i = 0;
@@ -50,9 +52,9 @@ static void destroy_game(t_game *game)
 }
 
 /*
-Destroys root struct and frees memory
+Destroys assets in root struct
 */
-void	destroy_root(t_root	*root)
+static void	destroy_assets(t_root *root)
 {
 	if (root != 0)
 	{
@@ -60,12 +62,27 @@ void	destroy_root(t_root	*root)
 			mlx_destroy_image(root->mlx, root->bg);
 		if (root->wall != 0)
 			mlx_destroy_image(root->mlx, root->wall);
+		if (root->black != 0)
+			mlx_destroy_image(root->mlx, root->black);
 		if (root->coll != 0)
 			mlx_destroy_image(root->mlx, root->coll);
 		if (root->exit != 0)
 			mlx_destroy_image(root->mlx, root->exit);
 		if (root->player != 0)
 			mlx_destroy_image(root->mlx, root->player);
+		if (root->enemy != 0)
+			mlx_destroy_image(root->mlx, root->enemy);
+	}
+}
+
+/*
+Destroys root struct and frees memory
+*/
+void	destroy_root(t_root	*root)
+{
+	if (root != 0)
+	{
+		destroy_assets(root);
 		if (root->mlx_img != 0)
 			mlx_destroy_image(root->mlx, root->mlx_img);
 		if (root->mlx_win != 0)

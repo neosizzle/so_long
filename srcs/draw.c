@@ -1,5 +1,8 @@
 #include "so_long.h"
 
+/*
+	Math to get xoffset
+*/
 static void	get_xoffset(int *x_draw, int x)
 {
 	if (x > 26)
@@ -12,6 +15,9 @@ static void	get_xoffset(int *x_draw, int x)
 	}
 }
 
+/*
+	Math to get yoffset
+*/
 static void	get_yoffset(int *y_draw, int y)
 {
 	if (y > 13)
@@ -24,6 +30,10 @@ static void	get_yoffset(int *y_draw, int y)
 	}
 }
 
+/*
+	Returns image pointers based on the current
+	map character
+*/
 static void	*get_bg(t_root *root, int x, int y)
 {
 	if (x > root->game->width || y >= root->game->height || y < 0)
@@ -40,9 +50,20 @@ static void	*get_bg(t_root *root, int x, int y)
 		return (root->coll);
 	if (root->game->map[y][x] == 'E')
 		return (root->exit);
+	if (root->game->map[y][x] == 'S')
+		return (root->enemy);
 	return (root->wall);
 }
 
+/*
+	This function will draw the map data to the screen
+	1. get the offset of vertical pixels to draw
+	 and store it in y_draw() based on player position
+	2. while y_draw is less than game height, do sth
+		- get the offset of horizontal pixels to draw
+	 	and store it in x_draw() based on player position
+		- call get_bg to put each and evey image to the screen
+*/
 static void	draw_map(t_root *root)
 {
 	int		x_map;
@@ -74,11 +95,21 @@ static void	draw_map(t_root *root)
 /*
 	Entry point of draw functions
 	1. call helper to draw all components
-	
+	2. call helper to draw the player move string
+	3. call move_enemy() every 50 frames
+	4. reset frames to 0 if frames > 150
+	5. increment frames
 */
 int	draw(t_root *root)
 {
+	static int	frame;
+
 	draw_map(root);
 	draw_info(root);
+	if (frame % 50 == 0)
+		move_enemy(root);
+	if (frame == 150)
+		frame = 0;
+	frame++;
 	return (1);
 }
